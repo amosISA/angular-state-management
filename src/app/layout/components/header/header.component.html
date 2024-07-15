@@ -1,0 +1,12 @@
+<ul class="flex">
+    @for (item of headerItems(); track item) {
+        <li class="flex-1 mr-2">
+            <a
+                [routerLink]="item.url"
+                routerLinkActive="text-white bg-blue-500"
+                class="block px-4 py-2 text-center text-blue-500 border border-blue-500 rounded">
+                {{ item.text }}
+            </a>
+        </li>
+    }
+</ul>
