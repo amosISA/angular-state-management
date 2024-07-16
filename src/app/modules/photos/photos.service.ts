@@ -10,8 +10,8 @@ export interface Photo {
 @Injectable({ providedIn: 'root' })
 export class PhotosService {
     private readonly _apiUrl: string = inject(API_URL);
-
-    getRandomPhotos(count = 9): Observable<Photo[]> {
+    
+    getRandomPhotos(count = 50): Observable<Photo[]> {
         return of(
             Array.from({ length: count }, (_, i) => ({
                 id: `${Date.now()}-${i}`,

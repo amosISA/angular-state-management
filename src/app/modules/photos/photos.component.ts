@@ -1,17 +1,14 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LoadMoreDirective } from 'src/app/shared/load-more.directive';
+import { LoadMoreDirective } from 'src/app/shared/directives/load-more.directive';
 import { Photo, PhotosService } from './photos.service';
 
 @Component({
   selector: 'app-photos',
-  templateUrl: './photos.component.html',
   standalone: true,
   imports: [NgOptimizedImage, LoadMoreDirective],
-  styles: `
-    :host { margin: 10px; }
-  `,
+  templateUrl: './photos.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {
@@ -33,11 +30,7 @@ export class PhotosComponent implements OnInit {
       next: (newPhotos: Photo[]) => {
         this.photos.set([...this.photos(), ...newPhotos]);
         this.isLoading.set(false);
-      },
-      error: err => {
-        window.console.log('Error fetching photos', err);
-        this.isLoading.set(false);
       }
-    })
+    });
   }
 }

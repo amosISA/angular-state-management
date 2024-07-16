@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-favourites',
+  selector: 'app-photo',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './favourites.component.html',
+  templateUrl: './photo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FavouritesComponent {}
+export class PhotoComponent {}

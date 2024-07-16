@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 export interface HeaderItem {
@@ -14,8 +14,8 @@ export interface HeaderItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  headerItems: WritableSignal<HeaderItem[]> = signal([
+  headerItems = signal<HeaderItem[]>([
     { text: 'Photos', url: 'photos' },
-    { text: 'Favourites', url: 'favourites' }
+    { text: 'Favourites', url: 'favourites' },
   ]);
 }

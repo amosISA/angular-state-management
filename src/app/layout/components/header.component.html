@@ -1,0 +1,27 @@
+<nav class="fixed top-0 left-0 w-full py-4 text-white bg-green-800">
+	<div class="container mx-auto">
+		<ul class="flex items-center justify-center ml-8 space-x-4">
+			@for (item of headerItems(); track item) {
+			<li class="inline-block">
+				<a [routerLink]="item.url" routerLinkActive="!bg-[#fff] text-[#000] rounded-md py-2">
+					{{ item.text }}
+				</a>
+			</li>
+			}
+		</ul>
+	</div>
+</nav>
+
+<ul class="flex">
+	<li class="flex-1 mr-2">
+		<a class="block px-4 py-2 text-center text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-700"
+			href="#">Active Item</a>
+	</li>
+	<li class="flex-1 mr-2">
+		<a class="block px-4 py-2 text-center text-blue-500 border border-white rounded hover:border-gray-200 hover:bg-gray-200"
+			href="#">Nav Item</a>
+	</li>
+	<li class="flex-1 text-center">
+		<a class="block px-4 py-2 text-gray-400 cursor-not-allowed" href="#">Disabled Item</a>
+	</li>
+</ul>

@@ -1,7 +1,7 @@
-<div class="flex flex-wrap justify-around">
+<div class="flex flex-wrap justify-around mt-[60px]">
     @for (photo of photos(); track photo; let last = $last) {
         <div
-            appLoadMoreDirective
+            appLoadMore
             [isLastItem]="last"
             (shouldLoadMore)="loadMorePhotos()"
             class="w-[200px] rounded overflow-hidden shadow-lg m-3">
