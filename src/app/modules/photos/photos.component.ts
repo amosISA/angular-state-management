@@ -7,9 +7,9 @@ import { Photo, PhotosService } from './photos.service';
 
 @Component({
   selector: 'app-photos',
+  templateUrl: './photos.component.html',
   standalone: true,
   imports: [NgOptimizedImage, LoadMoreDirective],
-  templateUrl: './photos.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {
