@@ -21,7 +21,6 @@ export class LoadMoreDirective implements AfterViewInit {
 
     private _callback: IntersectionObserverCallback = (entries, observer) => {
         const entry = entries[0];
-        console.log(entry.isIntersecting ? 'Estoy visible' : 'Estoy escondido');
 
         if (entry?.isIntersecting) {
             this.shouldLoadMore.emit();
