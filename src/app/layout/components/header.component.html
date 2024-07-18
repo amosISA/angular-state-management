@@ -4,7 +4,7 @@
     <a [routerLink]="item.url"
       routerLinkActive="bg-sky-500 !text-white"
       class="block px-4 py-2 text-center border rounded text-sky-500 border-sky-500 hover:bg-sky-700 hover:text-white hover:border-sky-700">
-      {{ item.text }}
+      {{ item.text }} ({{ getTotals(item.id) }})
     </a>
   </li>
   }

@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AppStore } from 'src/app/app.store';
 
 export interface HeaderItem {
+  id: number;
   text: string;
   url: string;
+  totals: number;
 }
 
 @Component({
@@ -14,8 +17,13 @@ export interface HeaderItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
+  private readonly _appStore = inject(AppStore);
   headerItems = signal<HeaderItem[]>([
-    { text: 'Photos', url: 'photos' },
-    { text: 'Favourites', url: 'favourites' },
+    { id: 1, text: 'Photos', url: 'photos', totals: 0 },
+    { id: 2, text: 'Favourites', url: 'favourites', totals: 0 },
   ]);
+
+  getTotals(id: number): number {
+    return id == 1 ? this._appStore.$totalPhotos() : this._appStore.$totalFavourites();
+  }
 }

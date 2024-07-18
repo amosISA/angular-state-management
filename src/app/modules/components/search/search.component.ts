@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
 import { outputFromObservable, toObservable } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
 import { debounceTime, distinctUntilChanged } from "rxjs";
+import { PhotosStore } from "../photos/photos.store";
 
 @Component({
   selector: 'app-search',
@@ -11,6 +12,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchComponent {
+  private readonly _photosStore = inject(PhotosStore);
   search = signal('');
   searchTerm = outputFromObservable(
     toObservable(this.search).pipe(
@@ -18,4 +20,8 @@ export class SearchComponent {
       distinctUntilChanged()
     )
   );
+
+  get totalItemsFilteres(): number {
+    return this._photosStore.$itemsBeingFiltered();
+  }
 }

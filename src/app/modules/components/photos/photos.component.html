@@ -1,7 +1,7 @@
 <app-search (searchTerm)="filterPhotos($event)" />
 
 <div class="flex flex-wrap justify-around">
-  @for (photo of filteredPhotos(); track photo; let last = $last) {
+  @for (photo of photosStore.$filteredPhotos(); track photo; let last = $last) {
     <div
         appLoadMore
         [isLastItem]="last"
@@ -24,7 +24,7 @@
   }
 </div>
 
-@if (isLoading()) {
+@if (photosStore.$isLoading()) {
   <div class="flex justify-center m-5">
     Loading...
   </div>

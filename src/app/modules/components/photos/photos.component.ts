@@ -1,57 +1,49 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { AppStore } from 'src/app/app.store';
 import { LoadMoreDirective } from 'src/app/shared/directives/load-more.directive';
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
-import { Photo, PhotosService } from './photos.service';
+import { Photo } from './photos.service';
+import { PhotosStore } from './photos.store';
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   standalone: true,
   imports: [NgOptimizedImage, LoadMoreDirective, SearchComponent],
+  providers: [PhotosStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {
-  photos = signal<Photo[]>([]);
-  filteredPhotos = signal<Photo[]>([]);
-  isLoading = signal(false);
-
-  private readonly _photosService = inject(PhotosService);
+  private readonly _appStore = inject(AppStore);
   private readonly _favouritesService = inject(FavouritesService);
   private readonly _destroy = inject(DestroyRef);
+  readonly photosStore = inject(PhotosStore);
 
   ngOnInit(): void {
     this.loadMorePhotos();
+    this._destroy.onDestroy(() => this._appStore.setPhotosTotals(0));
+  }
+
+  loadMorePhotos(totals = 20): void {
+    this.photosStore.loadMore(totals);
   }
 
   addFavourite(photo: Photo): void {
     this._favouritesService.addToFavourites(photo);
-    this.photos.set([...this.photos().filter((p: Photo) => p.id !== photo.id)]);
-    this.filteredPhotos.set([...this.photos()]);
-  }
-
-  loadMorePhotos(photos = 50): void {
-    this.isLoading.set(true);
-    this._photosService.getRandomPhotos(photos).pipe(
-      takeUntilDestroyed(this._destroy)
-    ).subscribe({
-      next: (newPhotos: Photo[]) => {
-        this.photos.set([...this.photos(), ...newPhotos]);
-        this.filteredPhotos.set([...this.photos()]);
-        this.isLoading.set(false);
-      }
-    });
   }
 
   filterPhotos(searchTerm: string): void {
     if (!searchTerm) {
-      this.filteredPhotos.set([...this.photos()]);
+      this.photosStore.setFilteredPhotos([...this.photosStore.$photos()]);
+      this._appStore.setPhotosTotals(this.photosStore.$photos().length);
       return;
     }
-    this.filteredPhotos.set([...this.photos().filter(
+    this.photosStore.setFilteredPhotos([...this.photosStore.$photos().filter(
       (p: Photo) => p.id.includes(searchTerm)
     )]);
+    this.photosStore.setItemsBeingFiltered(this.photosStore.$filteredPhotos().length);
+    this._appStore.setPhotosTotals(this.photosStore.$photos().length);
   }
 }
