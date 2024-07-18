@@ -3,17 +3,19 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadMoreDirective } from 'src/app/shared/directives/load-more.directive';
 import { FavouritesService } from '../favourites/favourites.service';
+import { SearchComponent } from '../search/search.component';
 import { Photo, PhotosService } from './photos.service';
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   standalone: true,
-  imports: [NgOptimizedImage, LoadMoreDirective],
+  imports: [NgOptimizedImage, LoadMoreDirective, SearchComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {
   photos = signal<Photo[]>([]);
+  filteredPhotos = signal<Photo[]>([]);
   isLoading = signal(false);
 
   private readonly _photosService = inject(PhotosService);
@@ -27,6 +29,7 @@ export class PhotosComponent implements OnInit {
   addFavourite(photo: Photo): void {
     this._favouritesService.addToFavourites(photo);
     this.photos.set([...this.photos().filter((p: Photo) => p.id !== photo.id)]);
+    this.filteredPhotos.set([...this.photos()]);
   }
 
   loadMorePhotos(photos = 50): void {
@@ -36,8 +39,19 @@ export class PhotosComponent implements OnInit {
     ).subscribe({
       next: (newPhotos: Photo[]) => {
         this.photos.set([...this.photos(), ...newPhotos]);
+        this.filteredPhotos.set([...this.photos()]);
         this.isLoading.set(false);
       }
     });
+  }
+
+  filterPhotos(searchTerm: string): void {
+    if (!searchTerm) {
+      this.filteredPhotos.set([...this.photos()]);
+      return;
+    }
+    this.filteredPhotos.set([...this.photos().filter(
+      (p: Photo) => p.id.includes(searchTerm)
+    )]);
   }
 }
