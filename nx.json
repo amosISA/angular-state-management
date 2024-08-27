@@ -10,9 +10,15 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s",
-      "!{projectRoot}/test-setup.[jt]s"
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/cypress/**/*",
+      "!{projectRoot}/**/*.cy.[jt]s?(x)",
+      "!{projectRoot}/cypress.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
+  "cli": {
+    "packageManager": "yarn"
   },
   "targetDefaults": {
     "@angular-devkit/build-angular:application": {
@@ -43,16 +49,48 @@
       }
     }
   },
+  "plugins": [
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "e2e",
+        "openTargetName": "open-cypress",
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "e2e-ci"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint",
+        "extensions": ["ts", "tsx", "js", "jsx", "html", "vue"]
+      }
+    }
+  ],
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "none",
       "linter": "eslint",
       "style": "scss",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "none",
+      "prefix": "app",
+      "skipTests": "true",
+      "standalone": "true"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "prefix": "lib",
+      "buildable": "true"
     },
     "@nx/angular:component": {
-      "style": "css"
+      "style": "scss",
+      "changeDetection": "OnPush",
+      "inlineStyle": "true",
+      "inlineTemplate": "true",
+      "skipTests": "true",
+      "standalone": "true"
     }
   },
-  "defaultProject": "photo-gallery"
+  "nxCloudAccessToken": "MWNjYzE3M2MtMDNhMC00MWZiLWE1YzctNzZmYmQyMGJlY2M2fHJlYWQtd3JpdGU="
 }
