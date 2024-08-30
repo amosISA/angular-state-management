@@ -1,0 +1,35 @@
+{
+  "name": "redux-plain",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/typescript/redux-plain/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "dependsOn": ["redux-plain:build"],
+      "options": {
+        "buildTarget": "redux-plain:build",
+        "webpackConfig":  "apps/typescript/redux-plain/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "redux-plain:build:production",
+          "optimization": true
+        }
+      }
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "../../../dist/apps/typescript/redux-plain",
+        "index": "apps/typescript/redux-plain/public/index.html",
+        "main": "apps/typescript/redux-plain/src/main.ts",
+        "tsConfig": "apps/typescript/redux-plain/tsconfig.app.json",
+        "styles": ["apps/typescript/redux-plain/src/styles.css"],
+        "webpackConfig": "apps/typescript/redux-plain/webpack.config.js"
+      }
+    }
+  }
+}

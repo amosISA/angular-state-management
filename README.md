@@ -25,7 +25,7 @@ In this approach, we've built a custom state management solution using Angular's
 - Leverages Signals for reactive state management
 - Custom implementation of actions, reducers, and selectors
 
-To explore this implementation, check out the `apps/custom-redux` directory.
+To explore this implementation, check out the `apps/angular/custom-redux` directory.
 
 ## NgRx Implementation
 
@@ -36,7 +36,7 @@ For the second approach, we've used NgRx, a popular Redux implementation for Ang
 - Implements the standard Redux pattern with actions, reducers, effects, and selectors
 - Showcases NgRx's powerful dev tools and middleware capabilities
 
-To explore this implementation, check out the `apps/ngrx-redux` directory.
+To explore this implementation, check out the `apps/angular/ngrx` directory.
 
 ## Comparison
 

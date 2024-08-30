@@ -1,5 +1,6 @@
 {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
-    }
+    },
+    "livePreview.defaultPreviewPath": "/dist/apps/typescript/redux-plain/index.html"
 }

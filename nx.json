@@ -65,6 +65,14 @@
         "targetName": "lint",
         "extensions": ["ts", "tsx", "js", "jsx", "html", "vue"]
       }
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview"
+      }
     }
   ],
   "generators": {
@@ -90,7 +98,11 @@
       "inlineTemplate": "true",
       "skipTests": "true",
       "standalone": "true"
+    },
+    "@nx/node:application": {
+      "bundler": "webpack",
+      "directory": "apps/typescript"
     }
   },
-  "nxCloudAccessToken": "MWNjYzE3M2MtMDNhMC00MWZiLWE1YzctNzZmYmQyMGJlY2M2fHJlYWQtd3JpdGU="
+  "neverConnectToCloud": true
 }

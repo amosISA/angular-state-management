@@ -1,0 +1,40 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer components {
+  .custom-checkbox {
+    @apply w-5 h-5 border-2 border-purple-600 rounded-md appearance-none checked:bg-purple-600 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2;
+  }
+
+  .custom-checkbox:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'%3E%3C/path%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 150%;
+  }
+}
+
+.completed {
+    @apply text-gray-400 line-through;
+}
+
+.task-item {
+    @apply flex items-center justify-between p-3 bg-[#9333ea26] rounded-lg shadow-sm transition duration-300 hover:shadow-md;
+}
+
+.task-checkbox {
+    @apply mr-3 custom-checkbox;
+}
+
+.task-text {
+    @apply flex-grow text-gray-800;
+}
+
+.task-delete {
+  @apply p-1 ml-3 transition duration-300 rounded-full focus:outline-none hover:bg-red-100;
+}
+
+.task-delete svg {
+  @apply text-red-500 hover:text-red-600;
+}
