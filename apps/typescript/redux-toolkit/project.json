@@ -1,0 +1,35 @@
+{
+  "name": "redux-toolkit",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/typescript/redux-toolkit/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/webpack:dev-server",
+      "dependsOn": ["redux-toolkit:build"],
+      "options": {
+        "buildTarget": "redux-toolkit:build",
+        "webpackConfig":  "apps/typescript/redux-toolkit/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "redux-toolkit:build:production",
+          "optimization": true
+        }
+      }
+    },
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "../../../dist/apps/typescript/redux-toolkit",
+        "index": "apps/typescript/redux-toolkit/public/index.html",
+        "main": "apps/typescript/redux-toolkit/src/main.ts",
+        "tsConfig": "apps/typescript/redux-toolkit/tsconfig.app.json",
+        "styles": ["apps/typescript/redux-toolkit/src/styles.css"],
+        "webpackConfig": "apps/typescript/redux-toolkit/webpack.config.js"
+      }
+    }
+  }
+}

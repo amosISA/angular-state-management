@@ -9,9 +9,9 @@
     "test": "nx test"
   },
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/Yvad60/blog-code-references.git"
-	},
+    "type": "git",
+    "url": "git+https://github.com/Yvad60/blog-code-references.git"
+  },
   "author": {
     "name": "Amos Lucian Isaila Onofrei",
     "url": "https://www.linkedin.com/in/amos-lucian-isaila-onofrei-34ab78146/"
@@ -27,6 +27,7 @@
     "@angular/platform-browser-dynamic": "~18.1.0",
     "@angular/router": "~18.1.0",
     "@nx/angular": "19.5.6",
+    "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.6.0",
     "express": "^4.19.2",
     "ngxtension": "^4.0.0",

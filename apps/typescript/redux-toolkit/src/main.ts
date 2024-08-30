@@ -1,13 +1,8 @@
+import { addTodo, removeTodo, RootState, store, toggleTodo } from './store';
 import "./styles.css";
-import { store, addTodo, toggleTodo, removeTodo, RootState } from './store';
-import Logo from "./images/codigotipado_logo.png";
 
 const taskInput = document.getElementById("taskInput") as HTMLInputElement;
 const taskList = document.getElementById("taskList") as HTMLUListElement;
-const logoImg = document.getElementById("logoImg") as HTMLImageElement;
-
-// Set the src attribute of the logo image
-logoImg.src = Logo;
 
 function addTask(): void {
   const taskText = taskInput.value.trim();

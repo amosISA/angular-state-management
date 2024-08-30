@@ -65,4 +65,9 @@ Remember, the choice between a custom implementation and NgRx depends on your pr
 
 If you prefer learning through video content, we recommend checking out this comprehensive course on YouTube: [State Management in Angular Course](https://www.youtube.com/playlist?list=PL0vmzAb282FhgSkMo5avnuRrpzdVvxDYo). This playlist covers various aspects of state management in Angular, providing practical examples and in-depth explanations.
 
+Contributions of any kind are welcome.
 Happy coding!
+
+## License
+
+MIT

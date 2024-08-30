@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/apps/typescript/redux-plain",
+    "outDir": "../../../dist/apps/typescript/redux-toolkit",
     "module": "es6",
     "types": ["node"],
     "target": "es5",

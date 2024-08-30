@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../dist/apps/typescript/redux-plain",
+    "outDir": "../../../dist/apps/typescript/redux-toolkit",
     "module": "es6",
     "types": ["node"],
     "target": "es5",
@@ -9,10 +9,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "include": [
-    "jest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts"
-  ]
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "include": ["src/**/*.ts"]
 }
