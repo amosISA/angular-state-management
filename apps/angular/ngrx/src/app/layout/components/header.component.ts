@@ -2,16 +2,20 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  Signal,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AppStore } from '../../app.store';
+import { Store } from '@ngrx/store';
+import { updateTotalFavourites, updateTotalPhotos } from '../../state/app.actions';
+import { selectTotalFavourites, selectTotalPhotos } from '../../state/app.selectors';
 
 export interface HeaderItem {
   id: number;
   text: string;
   url: string;
-  totals: number;
+  totals: Signal<number | undefined>;
 }
 
 @Component({
@@ -22,15 +26,24 @@ export interface HeaderItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  private readonly _appStore = inject(AppStore);
+  private readonly _appStore = inject(Store);
   headerItems = signal<HeaderItem[]>([
-    { id: 1, text: 'Photos', url: 'photos', totals: 0 },
-    { id: 2, text: 'Favourites', url: 'favourites', totals: 0 },
+    {
+      id: 1,
+      text: 'Photos',
+      url: 'photos',
+      totals: toSignal(this._appStore.select(selectTotalPhotos))
+    },
+    {
+      id: 2,
+      text: 'Favourites',
+      url: 'favourites',
+      totals: toSignal(this._appStore.select(selectTotalFavourites))
+    },
   ]);
 
-  getTotals(id: number): number {
-    return id == 1
-      ? this._appStore.$totalPhotos()
-      : this._appStore.$totalFavourites();
+  constructor() {
+    this._appStore.dispatch(updateTotalPhotos({ totalPhotos: 0 }));
+    this._appStore.dispatch(updateTotalFavourites({ totalFavourites: 0 }));
   }
 }
