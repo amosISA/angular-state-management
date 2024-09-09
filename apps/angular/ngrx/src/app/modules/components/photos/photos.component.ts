@@ -1,13 +1,15 @@
-import { NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
-  OnInit,
+  OnInit
 } from '@angular/core';
-import { AppStore } from '../../../app.store';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { LoadMoreDirective } from '../../../shared/directives/load-more.directive';
+import { filterPhotos, loadMorePhotos } from '../../../state/photos.actions';
+import { selectFilteredPhotos, selectIsLoading } from '../../../state/photos.selectors';
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
 import { Photo } from './photos.service';
@@ -17,23 +19,28 @@ import { PhotosStore } from './photos.store';
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   standalone: true,
-  imports: [NgOptimizedImage, LoadMoreDirective, SearchComponent],
+  imports: [AsyncPipe, NgOptimizedImage, LoadMoreDirective, SearchComponent],
   providers: [PhotosStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {
-  private readonly _appStore = inject(AppStore);
+  private readonly _store = inject(Store);
   private readonly _favouritesService = inject(FavouritesService);
-  private readonly _destroy = inject(DestroyRef);
-  readonly photosStore = inject(PhotosStore);
+
+  get filteredPhotos$(): Observable<Photo[]> {
+    return this._store.select(selectFilteredPhotos);
+  }
+
+  get isLoading$(): Observable<boolean> {
+    return this._store.select(selectIsLoading);
+  }
 
   ngOnInit(): void {
     this.loadMorePhotos();
-    this._destroy.onDestroy(() => this._appStore.setPhotosTotals(0));
   }
 
   loadMorePhotos(totals = 20): void {
-    this.photosStore.loadMore(totals);
+    this._store.dispatch(loadMorePhotos({ total: totals }));
   }
 
   addFavourite(photo: Photo): void {
@@ -41,19 +48,6 @@ export class PhotosComponent implements OnInit {
   }
 
   filterPhotos(searchTerm: string): void {
-    if (!searchTerm) {
-      this.photosStore.setFilteredPhotos([...this.photosStore.$photos()]);
-      this._appStore.setPhotosTotals(this.photosStore.$photos().length);
-      return;
-    }
-    this.photosStore.setFilteredPhotos([
-      ...this.photosStore
-        .$photos()
-        .filter((p: Photo) => p.id.includes(searchTerm)),
-    ]);
-    this.photosStore.setItemsBeingFiltered(
-      this.photosStore.$filteredPhotos().length
-    );
-    this._appStore.setPhotosTotals(this.photosStore.$photos().length);
+    this._store.dispatch(filterPhotos({ searchTerm }));
   }
 }

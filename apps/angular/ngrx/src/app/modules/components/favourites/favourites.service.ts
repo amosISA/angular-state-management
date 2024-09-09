@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AppStore } from '../../../app.store';
+import { updateTotalFavourites } from '../../../state/app.actions';
 import { Photo } from '../photos/photos.service';
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +9,7 @@ export class FavouritesService {
   private _favouritesSubject$ = new BehaviorSubject<Photo[]>([]);
   private _favourites: Photo[] = [];
 
-  private readonly _appStore = inject(AppStore);
+  private readonly _appStore = inject(Store);
 
   constructor() {
     this._loadFavourites();
@@ -26,14 +27,14 @@ export class FavouritesService {
     if (!this._favourites.some((p: Photo) => p.id === photo.id)) {
       this._favourites.push(photo);
       this._saveFavourites();
-      this._appStore.setFavouritesTotals(this._favourites.length);
+      this._appStore.dispatch(updateTotalFavourites({ totalFavourites: this._favourites.length }));
     }
   }
 
   removeFromFavourites(photoId: string): void {
     this._favourites = this._favourites.filter((p: Photo) => p.id !== photoId);
     this._saveFavourites();
-    this._appStore.setFavouritesTotals(this._favourites.length);
+    this._appStore.dispatch(updateTotalFavourites({ totalFavourites: this._favourites.length }));
   }
 
   private _saveFavourites(): void {
@@ -46,7 +47,7 @@ export class FavouritesService {
     if (storedFavourites) {
       this._favourites = JSON.parse(storedFavourites);
       this._favouritesSubject$.next(this._favourites);
-      this._appStore.setFavouritesTotals(this._favourites.length);
+      this._appStore.dispatch(updateTotalFavourites({ totalFavourites: this._favourites.length }));
     }
   }
 }
