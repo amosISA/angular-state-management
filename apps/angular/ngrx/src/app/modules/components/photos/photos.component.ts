@@ -13,14 +13,12 @@ import { selectFilteredPhotos, selectIsLoading } from '../../../state/photos.sel
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
 import { Photo } from './photos.service';
-import { PhotosStore } from './photos.store';
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   standalone: true,
   imports: [AsyncPipe, NgOptimizedImage, LoadMoreDirective, SearchComponent],
-  providers: [PhotosStore],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotosComponent implements OnInit {

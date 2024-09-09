@@ -52,6 +52,6 @@ export class PhotosEffects {
         ];
       }),
       mergeMap(actions => actions)
-    )
-  });
+    );
+  }, { dispatch: false });
 }
