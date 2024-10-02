@@ -5,7 +5,7 @@ import { Store } from "@ngrx/store";
 import { catchError, concatMap, map, mergeMap, of } from "rxjs";
 import { Photo, PhotosService } from "../modules/components/photos/photos.service";
 import { updateTotalPhotos } from "./app.actions";
-import { filterPhotos, loadMorePhotos, loadMorePhotosFailure, loadMorePhotosSuccess, setFilteredPhotos, setItemsBeingFiltered } from "./photos.actions";
+import { PhotosActions } from "./photos.actions";
 import { selectAllPhotos } from "./photos.selectors";
 
 @Injectable()
@@ -16,38 +16,38 @@ export class PhotosEffects {
 
   readonly loadMorePhotos$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType(loadMorePhotos),
+      ofType(PhotosActions.loadMorePhotos),
       concatLatestFrom(() => this._store.select(selectAllPhotos)),
       concatMap(([action, photos]) => {
         const { total } = action;
         return this._photosService.getRandomPhotos(total).pipe(
           map((newPhotos: Photo[]) => {
             return [
-              loadMorePhotosSuccess({ newPhotos }),
+              PhotosActions.loadMorePhotosSuccess({ newPhotos }),
               updateTotalPhotos({ totalPhotos: photos.length + newPhotos.length })
             ];
           }),
           mergeMap(actions => actions)
         );
       }),
-      catchError(() => of(loadMorePhotosFailure))
+      catchError(() => of(PhotosActions.loadMorePhotosFailure))
     )
   });
 
   readonly filterPhotos$ = createEffect(() => {
     return this._actions$.pipe(
-      ofType(filterPhotos),
+      ofType(PhotosActions.filterPhotos),
       concatLatestFrom(() => this._store.select(selectAllPhotos)),
       map(([action, photos]) => {
         const { searchTerm } = action;
         if (!searchTerm) {
-          return [setFilteredPhotos({ filteredPhotos: photos })];
+          return [PhotosActions.setFilteredPhotos({ filteredPhotos: photos })];
         }
 
         const filteredPhotos = photos.filter((p: Photo) => p.id.includes(searchTerm));
         return [
-          setFilteredPhotos({ filteredPhotos }),
-          setItemsBeingFiltered({ totals: filterPhotos.length }),
+          PhotosActions.setFilteredPhotos({ filteredPhotos }),
+          PhotosActions.setItemsBeingFiltered({ totals: PhotosActions.filterPhotos.length }),
           updateTotalPhotos({ totalPhotos: photos.length })
         ];
       }),

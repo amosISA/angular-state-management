@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Photo } from "../modules/components/photos/photos.service";
-import { filterPhotos, loadMorePhotos, loadMorePhotosFailure, loadMorePhotosSuccess, setFilteredPhotos, setItemsBeingFiltered } from "./photos.actions";
+import { PhotosActions } from "./photos.actions";
 
 export const photosFeatureKey = 'photos';
 
@@ -20,23 +20,23 @@ export const initialState: PhotosState = {
 
 export const photosReducer = createReducer(
   initialState,
-  on(setItemsBeingFiltered, (state, { totals }) => ({
+  on(PhotosActions.setItemsBeingFiltered, (state, { totals }) => ({
     ...state,
     itemsBeingFiltered: totals,
   })),
-  on(setFilteredPhotos, (state, { filteredPhotos }) => ({
+  on(PhotosActions.setFilteredPhotos, (state, { filteredPhotos }) => ({
     ...state,
     filteredPhotos,
   })),
-  on(filterPhotos, (state) => ({
+  on(PhotosActions.filterPhotos, (state) => ({
     ...state,
     isLoading: true,
   })),
-  on(loadMorePhotos, (state) => ({
+  on(PhotosActions.loadMorePhotos, (state) => ({
     ...state,
     isLoading: true,
   })),
-  on(loadMorePhotosSuccess, (state, { newPhotos }) => {
+  on(PhotosActions.loadMorePhotosSuccess, (state, { newPhotos }) => {
     const updatedPhotos = [...state.photos, ...newPhotos];
     return {
       ...state,
@@ -45,7 +45,7 @@ export const photosReducer = createReducer(
       isLoading: false,
     };
   }),
-  on(loadMorePhotosFailure, (state) => ({
+  on(PhotosActions.loadMorePhotosFailure, (state) => ({
     ...state,
     isLoading: false,
   }))

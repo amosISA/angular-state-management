@@ -8,7 +8,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LoadMoreDirective } from '../../../shared/directives/load-more.directive';
-import { filterPhotos, loadMorePhotos } from '../../../state/photos.actions';
+import { PhotosActions } from '../../../state/photos.actions';
 import { selectFilteredPhotos, selectIsLoading } from '../../../state/photos.selectors';
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
@@ -38,7 +38,7 @@ export class PhotosComponent implements OnInit {
   }
 
   loadMorePhotos(totals = 20): void {
-    this._store.dispatch(loadMorePhotos({ total: totals }));
+    this._store.dispatch(PhotosActions.loadMorePhotos({ total: totals }));
   }
 
   addFavourite(photo: Photo): void {
@@ -46,6 +46,6 @@ export class PhotosComponent implements OnInit {
   }
 
   filterPhotos(searchTerm: string): void {
-    this._store.dispatch(filterPhotos({ searchTerm }));
+    this._store.dispatch(PhotosActions.filterPhotos({ searchTerm }));
   }
 }
