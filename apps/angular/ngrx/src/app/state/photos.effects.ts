@@ -6,7 +6,7 @@ import { catchError, concatMap, map, mergeMap, of } from "rxjs";
 import { Photo, PhotosService } from "../modules/components/photos/photos.service";
 import { updateTotalPhotos } from "./app.actions";
 import { PhotosActions } from "./photos.actions";
-import { selectAllPhotos } from "./photos.selectors";
+import { photosFeature } from './photos.reducer';
 
 @Injectable()
 export class PhotosEffects {
@@ -17,7 +17,7 @@ export class PhotosEffects {
   readonly loadMorePhotos$ = createEffect(() => {
     return this._actions$.pipe(
       ofType(PhotosActions.loadMorePhotos),
-      concatLatestFrom(() => this._store.select(selectAllPhotos)),
+      concatLatestFrom(() => this._store.select(photosFeature.selectPhotos)),
       concatMap(([action, photos]) => {
         const { total } = action;
         return this._photosService.getRandomPhotos(total).pipe(
@@ -37,7 +37,7 @@ export class PhotosEffects {
   readonly filterPhotos$ = createEffect(() => {
     return this._actions$.pipe(
       ofType(PhotosActions.filterPhotos),
-      concatLatestFrom(() => this._store.select(selectAllPhotos)),
+      concatLatestFrom(() => this._store.select(photosFeature.selectPhotos)),
       map(([action, photos]) => {
         const { searchTerm } = action;
         if (!searchTerm) {
@@ -53,5 +53,5 @@ export class PhotosEffects {
       }),
       mergeMap(actions => actions)
     );
-  }, { dispatch: false });
+  });
 }

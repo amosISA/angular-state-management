@@ -3,13 +3,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LoadMoreDirective } from '../../../shared/directives/load-more.directive';
 import { PhotosActions } from '../../../state/photos.actions';
-import { selectFilteredPhotos, selectIsLoading } from '../../../state/photos.selectors';
+import {
+  selectFilteredPhotos,
+  selectIsLoading,
+} from '../../../state/photos.selectors';
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
 import { Photo } from './photos.service';

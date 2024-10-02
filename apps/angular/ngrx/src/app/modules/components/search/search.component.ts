@@ -9,7 +9,10 @@ import { outputFromObservable, toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
-import { selectItemsBeingFiltered } from '../../../state/photos.selectors';
+import {
+  selectFilteredPhotosAsString,
+  selectItemsBeingFiltered,
+} from '../../../state/photos.selectors';
 
 @Component({
   selector: 'app-search',
@@ -27,5 +30,9 @@ export class SearchComponent {
 
   get totalItemsFiltered$(): Observable<number> {
     return this._store.select(selectItemsBeingFiltered);
+  }
+
+  get stringFilteredPhotos$(): Observable<string> {
+    return this._store.select(selectFilteredPhotosAsString);
   }
 }

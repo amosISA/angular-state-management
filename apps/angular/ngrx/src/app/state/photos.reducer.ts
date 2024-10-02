@@ -1,4 +1,4 @@
-import { createReducer, on } from "@ngrx/store";
+import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { Photo } from "../modules/components/photos/photos.service";
 import { PhotosActions } from "./photos.actions";
 
@@ -50,3 +50,15 @@ export const photosReducer = createReducer(
     isLoading: false,
   }))
 );
+
+export const photosFeature = createFeature({
+  name: photosFeatureKey,
+  reducer: photosReducer,
+  extraSelectors: ({ selectFilteredPhotos, selectPhotos }) => ({
+    selectFilteredPhotosAsString: createSelector(
+      selectFilteredPhotos,
+      selectPhotos,
+      (photos: Photo[], total: Photo[]) => `Found: ${photos.map((photo) => photo.id).join(', ')} from a total of ${total.length}`
+    )
+  })
+});
