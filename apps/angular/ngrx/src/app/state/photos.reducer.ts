@@ -58,7 +58,9 @@ export const photosFeature = createFeature({
     selectFilteredPhotosAsString: createSelector(
       selectFilteredPhotos,
       selectPhotos,
-      (photos: Photo[], total: Photo[]) => `Found: ${photos.map((photo) => photo.id).join(', ')} from a total of ${total.length}`
+      (photos: Photo[], total: Photo[]) =>
+        `Found: ${photos.map((photo) => photo.id)
+          .join(', ')} from a total of ${total.length}`
     )
   })
 });
