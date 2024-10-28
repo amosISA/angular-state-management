@@ -9,10 +9,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LoadMoreDirective } from '../../../shared/directives/load-more.directive';
 import { PhotosActions } from '../../../state/photos.actions';
-import {
-  selectFilteredPhotos,
-  selectIsLoading,
-} from '../../../state/photos.selectors';
+import { photosFeature } from '../../../state/photos.reducer';
 import { FavouritesService } from '../favourites/favourites.service';
 import { SearchComponent } from '../search/search.component';
 import { Photo } from './photos.service';
@@ -29,11 +26,11 @@ export class PhotosComponent implements OnInit {
   private readonly _favouritesService = inject(FavouritesService);
 
   get filteredPhotos$(): Observable<Photo[]> {
-    return this._store.select(selectFilteredPhotos);
+    return this._store.select(photosFeature.selectFilteredPhotos);
   }
 
   get isLoading$(): Observable<boolean> {
-    return this._store.select(selectIsLoading);
+    return this._store.select(photosFeature.selectIsLoading);
   }
 
   ngOnInit(): void {
