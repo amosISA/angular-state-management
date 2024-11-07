@@ -1,22 +1,29 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 import { createFeature, createReducer, createSelector, on } from "@ngrx/store";
 import { Photo } from "../modules/components/photos/photos.service";
 import { PhotosActions } from "./photos.actions";
 
 export const photosFeatureKey = 'photos';
 
-export interface PhotosState {
+export type PhotosState = {
+  selectedPhoto: Photo | undefined;
   itemsBeingFiltered: number;
   photos: Photo[];
   filteredPhotos: Photo[];
   isLoading: boolean;
-}
+  error: string | undefined;
+} & EntityState<PhotosState>;
 
-export const initialState: PhotosState = {
+const adapter: EntityAdapter<Photo> = createEntityAdapter<Photo>();
+
+export const initialState = adapter.getInitialState({
+  selectedPhoto: undefined,
   itemsBeingFiltered: 0,
   photos: [],
   filteredPhotos: [],
   isLoading: true,
-};
+  error: undefined
+});
 
 export const photosReducer = createReducer(
   initialState,
